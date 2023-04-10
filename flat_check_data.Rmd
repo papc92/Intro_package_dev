@@ -1,0 +1,59 @@
+---
+title: "flat_check_data.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# My function
+
+```{r function-check_data}
+#' Check if your selection it is in squirrels' fur color vector
+#'
+#' This function aims to evaluate whether a string character corresponds or not to the squirrels' fur color vector
+#' 
+#' @param string You need to input as the parameter a string color
+#' 
+#' @return A boolean: TRUE if your string it is in fur color vector. FALSE otherwise
+#' 
+#' @export
+#'
+#' @examples
+check_primary_color_is_ok <- function(string) {
+  all_colors_OK <- all(
+    string %in% c("Gray", "Cinnamon", "Black", NA)
+  )
+  return(all_colors_OK)
+}
+```
+
+```{r examples-check_data}
+check_primary_color_is_ok("White")
+```
+
+```{r tests-check_data}
+test_that("check_data works", {
+
+   expect_true(
+    object = check_primary_color_is_ok(string = c("Gray", "Cinnamon", "Black"))
+  )
+  
+})
+```
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(flat_file = "dev/flat_check_data.Rmd", vignette_name = "Check data")
+```
+

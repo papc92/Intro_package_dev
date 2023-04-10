@@ -1,0 +1,163 @@
+---
+title: "flat_minimal.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+library(glue)
+library(dplyr)
+library(ggplot2)
+```
+
+<!--
+ You need to run the 'description' chunk in the '0-dev_history.Rmd' file before continuing your code there.
+-->
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# get_message_fur_color
+
+Get a message with a fur color
+
+You can get a message with the fur color of interest with `get_message_fur_color()`
+    
+```{r function-get_message_fur_color}
+#' Get a message with a fur color
+#' 
+#' You can get a message with the fur color of interest with `get_message_fur_color()`
+#' 
+#' @param primary_fur_color Character. The primary fur color of interest
+#'
+#' @return None. Used for side effect. Outputs a message in the console
+#' 
+#' @export
+#' 
+#' @importFrom glue glue
+#' 
+#' @examples
+get_message_fur_color <- function(primary_fur_color) {
+  message(glue("We will focus on {primary_fur_color} squirrels"))
+}
+```
+  
+```{r example-get_message_fur_color}
+get_message_fur_color(primary_fur_color = "Cinnamon")
+```
+  
+```{r tests-get_message_fur_color}
+test_that("get_message_fur_color works", {
+  
+   expect_message(
+    object = get_message_fur_color(primary_fur_color = "Cinnamon"), 
+    regexp = "We will focus on Cinnamon squirrels"
+  )
+  
+})
+```
+  
+# study_activity
+    
+```{r function-study_activity}
+#' study_activity
+#' 
+#' Asses the available data and the variable with the primary fur colors of the squirrels. Then, generates a table and a graph.
+#' 
+#' @return A list with the outputs
+#' 
+#' @importFrom ggplot2 ggplot aes geom_col labs scale_fill_manual
+#' @importFrom dplyr %>% filter
+#' 
+#' @param df_squirrels_act Dataframe. Sample data of squirrels
+#' @param col_primary_fur_color Character String. The column with the fur colors
+#' 
+#' @export
+#'
+study_activity <- function(df_squirrels_act, col_primary_fur_color) {
+  
+  stopifnot(is.data.frame(df_squirrels_act))
+  stopifnot(is.character(col_primary_fur_color))
+  
+  table <- df_squirrels_act %>% 
+    filter(col_primary_fur_color == primary_fur_color)
+    
+  graph <- table %>% 
+    ggplot() +
+    aes(x = activity, y = counts, fill = age) +
+    geom_col() +
+    labs(x = "Type of activity",
+         y = "Number of observations",
+         title = glue("Type of activity by age for {tolower(col_primary_fur_color)} squirrels")) +
+    scale_fill_manual(name = "Age",
+                      values = c("#00688B", "#00BFFF"))
+  
+  return(list(table = table, graph = graph))
+}
+```
+  
+```{r example-study_activity}
+data(DATASET)
+study_activity(df_squirrels_act = DATASET, 
+               col_primary_fur_color = "Gray")
+```
+  
+```{r tests-study_activity}
+test_that("study_activity works", {
+  expect_true(inherits(study_activity, "function")) 
+})
+```
+
+
+# save_as_csv
+    
+```{r function-save_as_csv}
+#' Save a dataset as CSV
+#' It saves a dataset as a csv file with a defined path
+#' 
+#' @param data Dataframe. The dataset to save as csv in the designed path 
+#' @param path String. The path where to save the dataframe
+#' 
+#' @return string. The output of the whole path where the csv is saved
+#' 
+#' @importFrom readr write_csv2 
+#' 
+#' @export
+#' 
+save_as_csv <- function(data, path){
+    data <- my_dataframe
+    path <- my_path
+    
+    write.csv2(data.csv, path)
+    
+    return(print(path/data))
+}
+```
+  
+```{r example-save_as_csv}
+save_as_csv()
+```
+  
+```{r tests-save_as_csv}
+test_that("save_as_csv works", {
+  expect_true(inherits(save_as_csv, "function")) 
+})
+```
+  
+
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(flat_file = "dev/flat_study_squirrels.Rmd", 
+               vignette_name = "Study the squirrels")
+
+```
+
+
+

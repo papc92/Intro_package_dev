@@ -1,0 +1,11 @@
+
+^dev$
+^LICENSE\.md$
+^squirrelspaul\.Rproj$
+^\.Rproj\.user$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^README\.Rmd$
+^CODE_OF_CONDUCT\.md$
+^data-raw$
